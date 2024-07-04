@@ -5,35 +5,108 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SGIA</title>
+    <link href="../public/css/styles.css" rel="stylesheet">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-    <div class="container">
-        <h1 class="mt-5">Sistema de Gestión de Inventarios y Abastecimiento</h1>
-        <div class="row mt-3">
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Categorías</h5>
-                        <p class="card-text">Administrar categorías de productos.</p>
-                        <a href="/categories" class="btn btn-primary">Ir a Categorías</a>
+    <div class="container-body">
+        <div class="banner">
+            <img src="../img/lf.jpg" alt="Banner Left">
+        </div>
+
+        <div class="container">
+            <h1 class="mt-5">Sistema de Gestión de Inventarios y Abastecimiento</h1>
+            <div class="row mt-3">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Categorías</h5>
+                            <p class="card-text">Administrar categorías de productos.</p>
+                            <img src="../img/categorizacion.png" class="card-img-top aling-img" alt="Categorías">
+                            <a href="/categories" class="btn btn-primary">Ir a Categorías</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Inventarios</h5>
+                            <p class="card-text">Administrar inventarios de productos.</p>
+                            <img src="../img/inventario.png" class="card-img-top aling-img" alt="Categorías">
+                            <a href="/inventory" class="btn btn-primary">Ir a Inventarios</a>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Inventarios</h5>
-                        <p class="card-text">Administrar inventarios de productos.</p>
-                        <a href="/inventory" class="btn btn-primary">Ir a Inventarios</a>
-                    </div>
+            <div class="row mt-3">
+                <div class="col-md-12">
+                    <h3 class="text-center">Cantidad de productos por categoría</h3>
+                    <canvas id="inventoryChart" class="w-25 h-auto m-auto"></canvas>
                 </div>
             </div>
         </div>
+
+        <div class="banner">
+            <img src="../img/lr.jpg" alt="Banner Left">
+        </div>
     </div>
+    
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        // Fetch data and create chart
+        fetch('/inventory/chart-data')
+            .then(response => response.json())
+            .then(data => {
+                const ctx = document.getElementById('inventoryChart').getContext('2d');
+                new Chart(ctx, {
+                    type: 'pie',
+                    data: {
+                        labels: data.map(item => item.category),
+                        datasets: [{
+                            label: 'Cantidad de productos',
+                            data: data.map(item => item.count),
+                            backgroundColor: [
+                                'rgba(255, 99, 132, 0.2)',
+                                'rgba(54, 162, 235, 0.2)',
+                                'rgba(255, 206, 86, 0.2)',
+                                'rgba(75, 192, 192, 0.2)',
+                                'rgba(153, 102, 255, 0.2)',
+                                'rgba(255, 159, 64, 0.2)'
+                            ],
+                            borderColor: [
+                                'rgba(255, 99, 132, 1)',
+                                'rgba(54, 162, 235, 1)',
+                                'rgba(255, 206, 86, 1)',
+                                'rgba(75, 192, 192, 1)',
+                                'rgba(153, 102, 255, 1)',
+                                'rgba(255, 159, 64, 1)'
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                position: 'top',
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(tooltipItem) {
+                                        return tooltipItem.label + ': ' + tooltipItem.raw;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            });
+    </script>
+
 </body>
 </html>

@@ -1,13 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SGIA-Inventario</title>
-    <link href="/css/styles.css" rel="stylesheet">
+    <link href="../public/css/styles.css" rel="stylesheet">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 </head>
+
 <body>
+
+    <!-- Botón para regresar al index principal -->
+    <a href="/" class="btn btn-primary mt-3 btn-return">
+        <span class="material-symbols-outlined">
+            arrow_back_ios
+        </span>
+        Regresar
+    </a>
+
     <div class="container">
         <h1 class="mt-5">Inventario</h1>
 
@@ -20,59 +33,70 @@
                 <label for="description">Descripción</label>
                 <textarea id="description" name="description" class="form-control"></textarea>
             </div>
-            <div class="form-group">
-                <label for="quantity">Cantidad</label>
-                <input type="number" id="quantity" name="quantity" class="form-control" required>
+            <div class="fields-distrib">
+                <div class="form-group w-100 mr-2 ">
+                    <label for="quantity">Cantidad</label>
+                    <input type="number" id="quantity" name="quantity" class="form-control" required>
+                </div>
+                <div class="form-group w-100">
+                    <label for="location">Ubicación</label>
+                    <input type="text" id="location" name="location" class="form-control">
+                </div>
             </div>
-            <div class="form-group">
-                <label for="location">Ubicación</label>
-                <input type="text" id="location" name="location" class="form-control">
+            <div class="fields-distrib">
+                <div class="form-group w-100 mr-2">
+                    <label for="brand">Marca</label>
+                    <input type="text" id="brand" name="brand" class="form-control">
+                </div>
+                <div class="form-group w-100">
+                    <label for="price">Precio</label>
+                    <input type="number" id="price" name="price" class="form-control" required>
+                </div>
             </div>
-            <div class="form-group">
-                <label for="brand">Marca</label>
-                <input type="text" id="brand" name="brand" class="form-control">
-            </div>
-            <div class="form-group">
-                <label for="price">Precio</label>
-                <input type="number" id="price" name="price" class="form-control" required>
-            </div>
-            <div class="form-group">
-                <label for="entry_date">Fecha de entrada</label>
-                <input type="date" id="entry_date" name="entry_date" class="form-control" required>
-            </div>
-            <div class="form-group">
-                <label for="categoryId">Category</label>
-                <select id="categoryId" name="categoryId" class="form-control">
-                    <% categories.forEach(function(category) { %>
-                        <option value="<%= category.id %>"><%= category.name %></option>
-                    <% }); %>
-                </select>
+            <div class="fields-distrib">
+                <div class="form-group w-100 mr-2">
+                    <label for="entry_date">Fecha de entrada</label>
+                    <input type="date" id="entry_date" name="entry_date" class="form-control" required>
+                </div>
+                <div class="form-group w-100">
+                    <label for="categoryId">Category</label>
+                    <select id="categoryId" name="categoryId" class="form-control">
+                        <% categories.forEach(function(category) { %>
+                            <option value="<%= category.id %>">
+                                <%= category.name %>
+                            </option>
+                            <% }); %>
+                    </select>
+                </div>
             </div>
             <button type="submit" class="btn btn-primary">Agregar producto</button>
         </form>
-        
+
         <h2>Productos</h2>
         <ul class="list-group">
             <% inventory.forEach(function(item){ %>
                 <li class="list-group-item">
-                    <strong><%= item.name %></strong> - <%= item.description %> (Stock: <%= item.quantity %>)
-                    <div>
-                        <form action="/inventory/<%= item.id %>" method="post" class="d-inline">
-                            <input type="hidden" name="_method" value="PUT">
-                            <button type="submit" class="btn btn-warning btn-sm">Editar</button>
-                        </form>
-                        <form action="/inventory/<%= item.id %>" method="post" class="d-inline">
-                            <input type="hidden" name="_method" value="DELETE">
-                            <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
-                        </form>
-                    </div>
+                    <strong>
+                        <%= item.name %>
+                    </strong> - <%= item.description %> (Stock: <%= item.quantity %>)
+                            <div>
+                                <form action="/inventory/<%= item.id %>" method="post" class="d-inline">
+                                    <input type="hidden" name="_method" value="PUT">
+                                    <button type="submit" class="btn btn-warning btn-sm">Editar</button>
+                                </form>
+                                <form action="/inventory/<%= item.id %>" method="post" class="d-inline">
+                                    <input type="hidden" name="_method" value="DELETE">
+                                    <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
+                                </form>
+                            </div>
                 </li>
-            <% }); %>
+                <% }); %>
         </ul>
     </div>
-    
+
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
+
 </html>

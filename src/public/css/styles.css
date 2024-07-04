@@ -36,10 +36,59 @@
     margin-left: 10px;
 }
 
+.container h1{
+    margin-bottom: 10vh;
+}
+
 .btn-return{
     margin-left: 30px;
     display: flex !important;
     width: 10vw;
     min-width: 113px;
     max-width: 150px;
+}
+
+.card-img-top{
+    max-width: 300px !important;
+}
+
+.card-body {
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+.aling-img{
+    margin: auto;
+    padding-bottom: 30px;
+}
+
+.fields-distrib{
+    display: flex;
+}
+
+
+/* General styles for the body and containers */
+.container-body {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100vh;
+    position: relative;
+}
+
+.banner {
+    width: 15%; /* Adjust the width as needed */
+    height: 100%;
+}
+
+.banner img {
+    width: 100%; /* Ensure the image covers the width of the container */
+    height: 100%; /* Ensure the image covers the height of the container */
+    object-fit: cover; /* Cover the entire container without distortion */
+    opacity: 0.5; /* Set the opacity */
+}
+
+.container {
+    width: 70%; /* Adjust the width as needed */
+    margin: 0 auto; /* Center the container */
 }

@@ -13,7 +13,7 @@ const PORT = process.env.PORT || 3000;
 const app = express();
 
 // Middleware para servir archivos estáticos desde la carpeta 'public'
-app.use(express.static(path.join(__dirname, "src", "public")));
+app.use(express.static(path.join(__dirname, "src")));
 
 // Middleware para configurar la sesión
 app.use(cookieParser());
