@@ -1,0 +1,45 @@
+.material-symbols-outlined {
+  font-variation-settings:
+  'FILL' 1,
+  'wght' 400,
+  'GRAD' 0,
+  'opsz' 24
+}
+
+.completed-icon {
+    color: #1AAF18; /* Color de fondo verde para completado */
+}
+
+.not-completed-icon {
+    color: #F19E39; /* Color de fondo naranja para no completado */
+}
+
+.material-icons-outlined {
+    font-family: 'Material Symbols Outlined', sans-serif;
+    font-size: 24px;
+}
+
+/* Resto de estilos para la lista de tareas */
+.todo-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    margin-bottom: 5px;
+    border-radius: 5px;
+}
+
+.todo-element{
+    display: flex;
+}
+
+.todo-title {
+    margin-left: 10px;
+}
+
+.btn-return{
+    margin-left: 30px;
+    display: flex !important;
+    width: 10vw;
+    min-width: 113px;
+    max-width: 150px;
+}
