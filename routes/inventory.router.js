@@ -6,8 +6,11 @@ const Category = require('../models/categoryModel');
 // Index
 router.get('/', async (req, res) => {
     try {
-        const inventory = await Inventory.findAll({ include: Category });
-        res.render('inventory/index', { inventory });
+        const inventory = await Inventory.findAll({
+            include: Category // Incluir la asociación con la categoría
+        });
+        const categories = await Category.findAll(); // Obtener todas las categorías
+        res.render('inventory/index', { inventory, categories }); // Pasar inventory y categories a la vista
     } catch (error) {
         res.status(500).send(error.message);
     }
@@ -16,7 +19,7 @@ router.get('/', async (req, res) => {
 // Create
 router.post('/', async (req, res) => {
     try {
-        const { name, description, quantity, location, brand, price, entry_date, serial_number, categoryId } = req.body;
+        const { name, description, quantity, location, brand, price, entry_date, categoryId } = req.body;
         await Inventory.create({ name, description, quantity, location, brand, price, entry_date, serial_number, categoryId });
         res.redirect('/inventory');
     } catch (error) {
@@ -24,21 +27,24 @@ router.post('/', async (req, res) => {
     }
 });
 
+
 // Update
 router.put('/:id', async (req, res) => {
     try {
-        const { name, description, quantity, location, brand, price, entry_date, serial_number, categoryId } = req.body;
+        const { name, description, quantity, location, brand, price, entry_date, categoryId } = req.body;
         const inventoryItem = await Inventory.findByPk(req.params.id);
         if (!inventoryItem) {
             return res.status(404).send('Producto no encontrado');
         }
-        Object.assign(inventoryItem, { name, description, quantity, location, brand, price, entry_date, serial_number, categoryId });
+        const serial_number = uuidv4(); // Generar el UUID aquí si es necesario
+        Object.assign(inventoryItem, { name, description, quantity, location, brand, price, entry_date, categoryId });
         await inventoryItem.save();
         res.redirect('/inventory');
     } catch (error) {
         res.status(500).send(error.message);
     }
 });
+
 
 // Delete
 router.delete('/:id', async (req, res) => {

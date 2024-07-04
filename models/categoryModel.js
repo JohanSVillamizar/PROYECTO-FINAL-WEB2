@@ -1,8 +1,10 @@
+// categoryModel.js
+
 const { DataTypes } = require('sequelize');
 const sequelize = require('../db/sequelize');
 
 const Category = sequelize.define(
-    'categories',
+    'Category', // Nombre del modelo, coincidente con el nombre de la tabla en la base de datos
     {
         id: {
             type: DataTypes.INTEGER,
@@ -16,12 +18,13 @@ const Category = sequelize.define(
         description: {
             type: DataTypes.TEXT,
             allowNull: true
-        },
+        }
     },
     {
-        tableName: 'category',
+        tableName: 'category', // Nombre exacto de la tabla en la base de datos
+        timestamps: true, // Opcional, dependiendo de tus requerimientos
     }
 );
 
-Category.sync({ alter: true }); // Asegúrate de sincronizar los cambios con la base de datos
+Category.sync({ alter: true }); 
 module.exports = Category;

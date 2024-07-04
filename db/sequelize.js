@@ -1,9 +1,9 @@
-const {Sequelize} = require('sequelize');
+const { Sequelize } = require('sequelize');
 
-//creamos objeto pasando como parametro
-const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASS,{
+const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASS, {
     host: process.env.DB_HOST,
-    dialect: 'postgres'
+    port: process.env.DB_PORT,
+    dialect: 'postgres', // Asegúrate de que el dialecto coincida con tu base de datos
 });
 
 module.exports = sequelize;

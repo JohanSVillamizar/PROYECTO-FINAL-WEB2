@@ -3,46 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inventory</title>
+    <title>SGIA-Inventario</title>
     <link href="/css/styles.css" rel="stylesheet">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
     <div class="container">
-        <h1 class="mt-5">Inventory List</h1>
+        <h1 class="mt-5">Inventario</h1>
 
         <form action="/inventory" method="post" class="mb-5">
             <div class="form-group">
-                <label for="name">Product Name</label>
+                <label for="name">Nombre del producto</label>
                 <input type="text" id="name" name="name" class="form-control" required>
             </div>
             <div class="form-group">
-                <label for="description">Description</label>
+                <label for="description">Descripción</label>
                 <textarea id="description" name="description" class="form-control"></textarea>
             </div>
             <div class="form-group">
-                <label for="quantity">Quantity</label>
+                <label for="quantity">Cantidad</label>
                 <input type="number" id="quantity" name="quantity" class="form-control" required>
             </div>
             <div class="form-group">
-                <label for="location">Location</label>
+                <label for="location">Ubicación</label>
                 <input type="text" id="location" name="location" class="form-control">
             </div>
             <div class="form-group">
-                <label for="brand">Brand</label>
+                <label for="brand">Marca</label>
                 <input type="text" id="brand" name="brand" class="form-control">
             </div>
             <div class="form-group">
-                <label for="price">Price</label>
+                <label for="price">Precio</label>
                 <input type="number" id="price" name="price" class="form-control" required>
             </div>
             <div class="form-group">
-                <label for="entry_date">Entry Date</label>
+                <label for="entry_date">Fecha de entrada</label>
                 <input type="date" id="entry_date" name="entry_date" class="form-control" required>
-            </div>
-            <div class="form-group">
-                <label for="serial_number">Serial Number</label>
-                <input type="text" id="serial_number" name="serial_number" class="form-control" required>
             </div>
             <div class="form-group">
                 <label for="categoryId">Category</label>
@@ -52,22 +48,22 @@
                     <% }); %>
                 </select>
             </div>
-            <button type="submit" class="btn btn-primary">Add Product</button>
+            <button type="submit" class="btn btn-primary">Agregar producto</button>
         </form>
         
-        <h2>Products</h2>
+        <h2>Productos</h2>
         <ul class="list-group">
             <% inventory.forEach(function(item){ %>
                 <li class="list-group-item">
-                    <strong><%= item.name %></strong> - <%= item.description %> (Quantity: <%= item.quantity %>)
+                    <strong><%= item.name %></strong> - <%= item.description %> (Stock: <%= item.quantity %>)
                     <div>
                         <form action="/inventory/<%= item.id %>" method="post" class="d-inline">
                             <input type="hidden" name="_method" value="PUT">
-                            <button type="submit" class="btn btn-warning btn-sm">Edit</button>
+                            <button type="submit" class="btn btn-warning btn-sm">Editar</button>
                         </form>
                         <form action="/inventory/<%= item.id %>" method="post" class="d-inline">
                             <input type="hidden" name="_method" value="DELETE">
-                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                            <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
                         </form>
                     </div>
                 </li>
