@@ -101,13 +101,14 @@ router.delete('/:id', async (req, res) => {
     try {
         const deleted = await Inventory.destroy({ where: { id: req.params.id } });
         if (deleted) {
-            res.send('Producto eliminado');
+            res.json({ success: true, message: 'Producto eliminado' });
         } else {
-            res.status(404).send('Producto no encontrado');
+            res.status(404).json({ success: false, message: 'Producto no encontrado' });
         }
     } catch (error) {
-        res.status(500).send(error.message);
+        res.status(500).json({ success: false, message: error.message });
     }
 });
+
 
 module.exports = router;

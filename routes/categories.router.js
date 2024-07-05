@@ -61,12 +61,12 @@ router.delete('/:id', async (req, res) => {
     try {
         const deleted = await Category.destroy({ where: { id: req.params.id } });
         if (deleted) {
-            res.send('Categoría eliminada');
+            res.json({ success: true, message: 'Categoría eliminada' });
         } else {
-            res.status(404).send('Categoría no encontrada');
+            res.status(404).json({ success: false, message: 'Categoría no encontrada' });
         }
     } catch (error) {
-        res.status(500).send(error.message);
+        res.status(500).json({ success: false, message: error.message });
     }
 });
 

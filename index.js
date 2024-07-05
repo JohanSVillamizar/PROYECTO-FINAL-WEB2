@@ -12,10 +12,7 @@ const categoriesRouter = require('./routes/categories.router');
 const PORT = process.env.PORT || 3000;
 const app = express();
 
-// Middleware para servir archivos estáticos desde la carpeta 'public'
 app.use(express.static(path.join(__dirname, "src")));
-
-// Middleware para configurar la sesión
 app.use(cookieParser());
 app.use(
   session({
@@ -24,36 +21,26 @@ app.use(
     saveUninitialized: false,
     cookie: {
       secure: false,
-      maxAge: 24 * 60 * 60 * 1000, // 1 día
+      maxAge: 24 * 60 * 60 * 1000,
     },
   })
 );
 
-// Middleware para parsear el body de las solicitudes
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-// Middleware para sobrescribir métodos HTTP
 app.use(methodOverride("_method"));
 
-// Configuración de vistas EJS
 app.set("views", "./src/views");
 app.set("view engine", "ejs");
 
-// Middleware para configurar Passport
-passportConfig(app);
-
-// Configuración de las rutas
 app.use('/auth', authRouter);
 app.use('/inventory', inventoryRouter);
 app.use('/categories', categoriesRouter);
 
-// Ruta principal para renderizar el index
 app.get('/', (req, res) => {
-    res.render('index'); // Renderiza la vista index.ejs desde la carpeta de vistas
+    res.render('index');
 });
 
-// Levantar el servidor
 app.listen(PORT, () => {
   console.log(`Servidor escuchando en el puerto ${PORT}`);
 });
