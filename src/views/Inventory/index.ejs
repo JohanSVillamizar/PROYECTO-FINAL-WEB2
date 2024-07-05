@@ -15,8 +15,8 @@
 
     <!-- Botón para regresar al index principal -->
     <a href="/" class="btn btn-primary mt-3 btn-return">
-        <span class="material-symbols-outlined">
-            arrow_back_ios
+        <span class="material-symbols-outlined icon-home">
+            home
         </span>
         Regresar
     </a>
@@ -76,19 +76,26 @@
         <ul class="list-group">
             <% inventory.forEach(function(item){ %>
                 <li class="list-group-item">
-                    <strong>
-                        <%= item.name %>
-                    </strong> - <%= item.description %> (Stock: <%= item.quantity %>)
-                            <div>
-                                <form action="/inventory/<%= item.id %>" method="post" class="d-inline">
-                                    <input type="hidden" name="_method" value="PUT">
-                                    <button type="submit" class="btn btn-warning btn-sm">Editar</button>
-                                </form>
-                                <form action="/inventory/<%= item.id %>" method="post" class="d-inline">
-                                    <input type="hidden" name="_method" value="DELETE">
-                                    <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
-                                </form>
-                            </div>
+                    <div class="info-product">
+                        <strong>
+                            <%= item.name %>
+                        </strong>
+                        - <%= item.description %> (Stock: <%= item.quantity %>)
+                    </div>
+                    <div class="ubication-product">
+                        <strong>Ubicación:</strong>
+                        <%= item.location %>
+                        <strong>Fecha de ingreso:</strong>
+                        <%= item.formatted_entry_date %>
+                    </div>                    
+
+                    <div>
+                        <a href="/inventory/<%= item.id %>/edit" class="btn btn-warning btn-sm">Editar</a>
+                        <form action="/inventory/<%= item.id %>" method="post" class="d-inline">
+                            <input type="hidden" name="_method" value="DELETE">
+                            <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
+                        </form>
+                    </div>
                 </li>
                 <% }); %>
         </ul>

@@ -15,8 +15,8 @@
 
     <!-- Botón para regresar al index principal -->
     <a href="/" class="btn btn-primary mt-3 btn-return">
-        <span class="material-symbols-outlined">
-            arrow_back_ios
+        <span class="material-symbols-outlined icon-home">
+            home
         </span>
         Regresar
     </a>
@@ -39,27 +39,19 @@
 
         <h2>Categorías Existentes</h2>
         <ul class="list-group">
-            <!-- Iteración sobre las categorías para mostrarlas -->
-            <% categories.forEach(function(category){ %>
+            <% categories.forEach(function(category) { %>
                 <li class="list-group-item">
-                    <strong>
-                        <%= category.id %> | <%= category.name %>
-                    </strong> - <%= category.description %>
-                        <div>
-                            <!-- Formulario para editar categoría -->
-                            <form action="/categories/<%= category.id %>" method="post" class="d-inline">
-                                <input type="hidden" name="_method" value="PUT">
-                                <button type="submit" class="btn btn-warning btn-sm">Edit</button>
-                            </form>
-                            <!-- Formulario para eliminar categoría -->
-                            <form action="/categories/<%= category.id %>" method="post" class="d-inline">
-                                <input type="hidden" name="_method" value="DELETE">
-                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                            </form>
-                        </div>
+                    <strong><%= category.id %> | <%= category.name %></strong> - <%= category.description %>
+                    <div>
+                        <a href="/categories/<%= category.id %>/edit" class="btn btn-warning btn-sm">Editar</a>
+                        <form action="/categories/<%= category.id %>" method="post" class="d-inline">
+                            <input type="hidden" name="_method" value="DELETE">
+                            <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
+                        </form>
+                    </div>
                 </li>
-                <% }); %>
-        </ul>
+            <% }); %>
+        </ul>   
 
 
     </div>

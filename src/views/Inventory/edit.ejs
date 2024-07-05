@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Inventario</title>
+    <link rel="stylesheet" href="/public/css/styles.css">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+</head>
+
+<body>
+    <div class="container mt-5">
+        <h1 class="mb-4">Editar Inventario</h1>
+        <form id="editForm" action="/inventory/<%= inventory.id %>?_method=PUT" method="POST">
+            <input type="hidden" name="_method" value="PUT">
+            <div class="form-group">
+                <label for="name">Nombre:</label>
+                <input type="text" id="name" name="name" class="form-control" value="<%= inventory.name %>" required>
+            </div>
+            <div class="form-group">
+                <label for="description">Descripción:</label>
+                <textarea id="description" name="description" class="form-control"><%= inventory.description %></textarea>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="quantity">Cantidad:</label>
+                    <input type="number" id="quantity" name="quantity" class="form-control" value="<%= inventory.quantity %>" required>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="location">Ubicación:</label>
+                    <input type="text" id="location" name="location" class="form-control" value="<%= inventory.location %>">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="brand">Marca:</label>
+                    <input type="text" id="brand" name="brand" class="form-control" value="<%= inventory.brand %>">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="price">Precio:</label>
+                    <input type="number" step="0.01" id="price" name="price" class="form-control" value="<%= inventory.price %>" required>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="entry_date">Fecha de entrada:</label>
+                    <input type="date" id="entry_date" name="entry_date" class="form-control" value="<%= inventory.entry_date.toISOString().split('T')[0] %>" required>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="categoryId">Categoría:</label>
+                    <select id="categoryId" name="categoryId" class="form-control">
+                        <% categories.forEach(category => { %>
+                            <option value="<%= category.id %>" <%= category.id === inventory.categoryId ? 'selected' : '' %>><%= category.name %></option>
+                        <% }); %>
+                    </select>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Guardar cambios</button>
+            <a href="/inventory" class="btn btn-secondary">Cancelar</a>
+        </form>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        document.getElementById('editForm').addEventListener('submit', async function(event) {
+            event.preventDefault(); // Previene el envío del formulario por defecto
+            const form = event.target;
+            const action = form.action;
+
+            try {
+                const formData = new FormData(form);
+                const data = Object.fromEntries(formData.entries());
+
+                const response = await fetch(action, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-HTTP-Method-Override': 'PUT' // Sobrescribir el método HTTP
+                    },
+                    body: JSON.stringify(data),
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Actualización Exitosa',
+                        text: result.message,
+                    }).then(() => {
+                        window.location.href = '/inventory';
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: result.message,
+                    });
+                }
+            } catch (error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Ocurrió un error al actualizar el inventario.',
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>

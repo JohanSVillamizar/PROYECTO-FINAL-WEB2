@@ -92,3 +92,15 @@
     width: 70%; /* Adjust the width as needed */
     margin: 0 auto; /* Center the container */
 }
+
+.icon-home{
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 400,
+  'GRAD' 0,
+  'opsz' 24
+}
+
+.list-group-item{
+    display: flex;
+}

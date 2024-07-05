@@ -1,5 +1,3 @@
-// inventoryModel.js
-
 const { DataTypes } = require('sequelize');
 const sequelize = require('../db/sequelize');
 const Category = require('./categoryModel');

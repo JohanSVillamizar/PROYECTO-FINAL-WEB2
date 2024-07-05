@@ -5,8 +5,23 @@ const Category = require('../models/categoryModel');
 // Index
 router.get('/', async (req, res) => {
     try {
-        const categories = await Category.findAll();
+        const categories = await Category.findAll({
+            order:[['id','ASC']]
+        });
         res.render('categories/index', { categories });
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+});
+
+//Edit
+router.get('/:id/edit', async (req, res) => {
+    try {
+        const category = await Category.findByPk(req.params.id);
+        if (!category) {
+            return res.status(404).send('Categoría no encontrada');
+        }
+        res.render('categories/edit', { category });
     } catch (error) {
         res.status(500).send(error.message);
     }
@@ -29,15 +44,17 @@ router.put('/:id', async (req, res) => {
         const { name, description } = req.body;
         const category = await Category.findByPk(req.params.id);
         if (!category) {
-            return res.status(404).send('Categoría no encontrada');
+            return res.status(404).json({ success: false, message: 'Categoría no encontrada' });
         }
-        Object.assign(category, { name, description });
+        category.name = name;
+        category.description = description;
         await category.save();
-        res.redirect('/categories');
+        res.json({ success: true, message: 'Actualización exitosa' });
     } catch (error) {
-        res.status(500).send(error.message);
+        res.status(500).json({ success: false, message: error.message });
     }
 });
+
 
 // Delete
 router.delete('/:id', async (req, res) => {

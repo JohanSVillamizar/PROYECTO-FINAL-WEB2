@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Categoría</title>
+    <link href="/public/css/styles.css" rel="stylesheet">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+</head>
+
+<body>
+    <div class="container mt-5">
+        <h1 class="mb-4">Editar Categoría</h1>
+        <form id="editForm" action="/categories/<%= category.id %>?_method=PUT" method="POST">
+            <div class="form-group">
+                <label for="name">Nombre</label>
+                <input type="text" class="form-control" id="name" name="name" value="<%= category.name %>" required>
+            </div>
+            <div class="form-group">
+                <label for="description">Descripción</label>
+                <textarea class="form-control" id="description" name="description" rows="3"><%= category.description %></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Guardar cambios</button>
+            <a href="/categories" class="btn btn-secondary">Cancelar</a>
+        </form>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    
+    <script>
+        document.getElementById('editForm').addEventListener('submit', async function(event) {
+            event.preventDefault(); // Previene el envío del formulario por defecto
+            const form = event.target;
+            const action = form.action;
+
+            try {
+                const formData = new FormData(form);
+                const data = Object.fromEntries(formData.entries());
+
+                const response = await fetch(action, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-HTTP-Method-Override': 'PUT' // Sobrescribir el método HTTP
+                    },
+                    body: JSON.stringify(data),
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Actualización Exitosa',
+                        text: result.message,
+                    }).then(() => {
+                        window.location.href = '/categories';
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: result.message,
+                    });
+                }
+            } catch (error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Ocurrió un error al actualizar la categoría.',
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>

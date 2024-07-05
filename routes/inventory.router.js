@@ -8,14 +8,22 @@ const Category = require('../models/categoryModel');
 router.get('/', async (req, res) => {
     try {
         const inventory = await Inventory.findAll({
-            include: Category // Incluir la asociación con la categoría
+            include: Category, // Incluir la asociación con la categoría
+            order: [['name', 'ASC']]
         });
+
+        // Formatear la fecha de entrada en formato DD/MM/YYYY
+        inventory.forEach(item => {
+            item.formatted_entry_date = item.entry_date.toLocaleDateString('es-ES'); // Cambia 'es-ES' según tu localidad
+        });
+
         const categories = await Category.findAll(); // Obtener todas las categorías
         res.render('inventory/index', { inventory, categories }); // Pasar inventory y categories a la vista
     } catch (error) {
         res.status(500).send(error.message);
     }
 });
+
 
 // Ruta para obtener datos del gráfico
 router.get('/chart-data', async (req, res) => {
@@ -44,6 +52,21 @@ router.get('/chart-data', async (req, res) => {
     }
 });
 
+router.get('/:id/edit', async (req, res) => {
+    try {
+        const inventory = await Inventory.findByPk(req.params.id, {
+            include: Category
+        });
+        if (!inventory) {
+            return res.status(404).send('Producto no encontrado');
+        }
+        const categories = await Category.findAll();
+        res.render('inventory/edit', { inventory, categories });
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+});
+
 // Create
 router.post('/', async (req, res) => {
     try {
@@ -64,12 +87,11 @@ router.put('/:id', async (req, res) => {
         if (!inventoryItem) {
             return res.status(404).send('Producto no encontrado');
         }
-        const serial_number = uuidv4(); // Generar el UUID aquí si es necesario
         Object.assign(inventoryItem, { name, description, quantity, location, brand, price, entry_date, categoryId });
         await inventoryItem.save();
-        res.redirect('/inventory');
+        res.json({ success: true, message: 'Actualización exitosa' });
     } catch (error) {
-        res.status(500).send(error.message);
+        res.status(500).json({ success: false, message: error.message });
     }
 });
 
